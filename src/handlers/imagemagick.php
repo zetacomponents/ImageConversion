@@ -603,8 +603,7 @@ class ezcImageImagemagickHandler extends ezcImageImagemagickBaseHandler
 
         $this->addFilterOption(
             $this->getActiveReference(),
-            '-composite',
-            '' 
+            '-composite'
         );
 
         $this->addFilterOption(

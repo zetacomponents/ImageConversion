@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0552010b858cb16353cc5016e4693953",
+    "hash": "ee799b2012c4574ce824f38511402e00",
     "packages": [
         {
             "name": "zetacomponents/base",

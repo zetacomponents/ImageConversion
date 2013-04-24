@@ -41,11 +41,11 @@
     "description": "A set of classes to apply different filters on images, such as colour changes, resizing and special effects.",
     "homepage": "https://github.com/zetacomponents",
     "license": "Apache-2.0",
-        "require": {
-            "zetacomponents/base": "*",
-            "zetacomponents/image-analysis": ">=1.1.3"
-        },
-        "require-dev": {
-            "zetacomponents/unit-test": "*"
-        }
+    "require": {
+        "zetacomponents/base": "*",
+        "zetacomponents/image-analysis": ">=1.1.3"
+    },
+    "require-dev": {
+        "zetacomponents/unit-test": "@dev"
+    }
 }

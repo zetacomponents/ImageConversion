@@ -38,7 +38,7 @@ require_once dirname( __FILE__ ) . "/test_case.php";
  * @package ImageConversion
  * @version //autogentag//
  */
-class ezcImageConversionHandlerTest extends ezcImageConversionTestCase
+abstract class ezcImageConversionHandlerTest extends ezcImageConversionTestCase
 {
 
     protected $handlerClass;

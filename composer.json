@@ -42,8 +42,8 @@
     "homepage": "https://github.com/zetacomponents",
     "license": "Apache-2.0",
     "require": {
-        "zetacomponents/base": "*",
-        "zetacomponents/image-analysis": ">=1.1.3"
+        "zetacomponents/base": "~1.8",
+        "zetacomponents/image-analysis": "~1.1"
     },
     "require-dev": {
         "zetacomponents/unit-test": "@dev"

@@ -44,6 +44,7 @@
 class ezcImageGdHandler extends ezcImageGdBaseHandler
                         implements ezcImageGeometryFilters,
                                    ezcImageColorspaceFilters,
+                                   ezcImageRotateFilters,
                                    ezcImageWatermarkFilters,
                                    ezcImageThumbnailFilters
 {
@@ -969,6 +970,72 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         }
         imagedestroy( $oldResource );
         $this->setActiveResource( $newResource );
+    }
+
+    /**
+     * Rotation filter.
+     * General rotation filter. Rotates the image a certain amount of degrees.
+     *
+     * @param int $degrees   Amount of degrees to rotate the image (in
+     *                       clockwise direction)
+     * @return void
+     *
+     * @throws ezcImageInvalidReferenceException
+     *         If no valid resource for the active reference could be found.
+     * @throws ezcImageFilterFailedException
+     *         If the operation performed by the the filter failed.
+     * @throws ezcBaseValueException
+     *         If a submitted parameter was out of range or type.
+     */
+    function rotate( $degrees )
+    {
+        if ( !is_int( $degrees ) || $degrees < 0 )
+        {
+            throw new ezcBaseValueException( 'degrees', $degrees, 'int > 0' );
+        }
+
+        $oldResource = $this->getActiveResource();
+
+        $bgColour = imageColorAllocateAlpha( $oldResource, 0, 0, 0, 0 );
+        $newResource = imagerotate( $oldResource, -$degrees, $bgColour );
+        imagealphablending( $newResource, true );
+        imagesavealpha( $newResource, true );
+
+        $this->setActiveResource( $newResource );
+    }
+
+    /**
+     * Horizontal flip filter.
+     * Flips the image on its horizonal axis.
+     *
+     * @return void
+     *
+     * @throws ezcImageInvalidReferenceException
+     *         If no valid resource for the active reference could be found.
+     * @throws ezcImageFilterFailedException
+     *         If the operation performed by the the filter failed.
+     * @throws ezcBaseValueException
+     *         If a submitted parameter was out of range or type.
+     */
+    function flipHorizontal()
+    {
+    }
+    
+    /**
+     * Vertical flip filter.
+     * Flips the image on its vertical axis.
+     *
+     * @return void
+     *
+     * @throws ezcImageInvalidReferenceException
+     *         If no valid resource for the active reference could be found.
+     * @throws ezcImageFilterFailedException
+     *         If the operation performed by the the filter failed.
+     * @throws ezcBaseValueException
+     *         If a submitted parameter was out of range or type.
+     */
+    function flipVertical()
+    {
     }
 }
 ?>

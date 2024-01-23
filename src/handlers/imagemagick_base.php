@@ -456,7 +456,7 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
         $return = proc_close( $imageProcess );
 
         // Process potential errors
-        if ( strlen( $errorString ) > 0 || strpos( $outputString, 'ImageMagick' ) === false )
+        if ( strpos( $outputString, 'ImageMagick' ) === false )
         {
             throw new ezcImageHandlerNotAvailableException( 'ezcImageImagemagickHandler', 'ImageMagick not installed or not available in PATH variable.' );
         }

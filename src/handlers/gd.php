@@ -862,6 +862,10 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      */
     protected function getColor( $resource, $r, $g, $b )
     {
+        $r = round( $r );
+        $g = round( $g );
+        $b = round( $b );
+
         if ( ( $res = imagecolorexact( $resource, $r, $g, $b ) ) !== -1 )
         {
             return $res;
@@ -874,6 +878,7 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         {
             return $res;
         }
+
         throw new ezcImageFilterFailedException( 'allocatecolor', "Color allocation failed for color r: '{$r}', g: '{$g}', b: '{$b}'." );
     }
 
@@ -894,11 +899,11 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         $oldResource = $this->getActiveResource();
         if ( imageistruecolor( $oldResource ) )
         {
-            $newResource = imagecreatetruecolor( $width, $height );
+            $newResource = imagecreatetruecolor( round( $width ), round( $height ) );
         }
         else
         {
-            $newResource = imagecreate( $width, $height );
+            $newResource = imagecreate( round( $width ), round( $height ) );
         }
 
         // Save transparency, if image has it
@@ -911,8 +916,8 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
             $newResource,
             $oldResource,
             0, 0, 0, 0,
-            $width,
-            $height,
+            round( $width ),
+            round( $height ),
             imagesx( $this->getActiveResource() ),
             imagesy( $this->getActiveResource() )
         );

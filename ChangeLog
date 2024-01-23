@@ -1,3 +1,11 @@
+1.4.1 - Tuesday 23 January 2024
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Fix ImageMagick detection by ignoring the error string
+- Don't rely on automatic float to int converstion, and convert explicitly
+- Make tests run with PHPUnit 9
+
+
 1.4 - Saturday 27 September 2014
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

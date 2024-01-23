@@ -9,9 +9,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -170,7 +170,7 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
             {
                 unset( $conversionsIn["image/xpm"] );
             }
-  
+
             $settings = new ezcImageConverterSettings(
                 array( new ezcImageHandlerSettings( "GD", "ezcImageGdHandler" ) ),
                 $conversionsIn
@@ -728,7 +728,7 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
             2000
         );
     }
-    
+
     // Test for bug #10949: rename php error if file allread exists
     public function testDoubleTransform()
     {
@@ -738,7 +738,7 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
         $resFile = $this->getTempPath( "jpeg" );
         $trans->transform( $this->testFiles["jpeg"], $resFile );
         $trans->transform( $this->testFiles["jpeg"], $resFile );
-        
+
         // Should not fail or produce a notice
     }
 
@@ -750,7 +750,7 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
         // irrelevant, but set!
         $opts->compression = 9;
         $dstPath =  $this->getTempPath( "jpeg" );
-        
+
         $trans = new ezcImageTransformation( $this->converter, "test", array(), $mimeOut, $opts );
         $trans->transform( $this->testFiles["png"], $dstPath );
 
@@ -769,7 +769,7 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
         // irrelevant, but set!
         $opts->compression = 9;
         $dstPath =  $this->getTempPath( "jpeg" );
-        
+
         $trans = new ezcImageTransformation( $this->converter, "test", array(), $mimeOut, $opts );
         $trans->transform( $this->testFiles["png"], $dstPath );
 
@@ -788,7 +788,7 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
         // irrelevant, but set!
         $opts->quality     = 100;
         $dstPath =  $this->getTempPath( "png" );
-        
+
         $trans = new ezcImageTransformation( $this->converter, "test", array(), $mimeOut, $opts );
         $trans->transform( $this->testFiles["png"], $dstPath );
 
@@ -807,7 +807,7 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
         // irrelevant, but set!
         $opts->quality     = 100;
         $dstPath =  $this->getTempPath( "png" );
-        
+
         $trans = new ezcImageTransformation( $this->converter, "test", array(), $mimeOut, $opts );
         $trans->transform( $this->testFiles["png"], $dstPath );
 
@@ -858,7 +858,7 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
         {
             $exceptionThrown = true;
         }
-        
+
         chmod( $dstFile, 0666 );
         chmod( dirname( $dstFile ), 0777 );
         clearstatcache();
@@ -896,7 +896,7 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
 
         $trans = new ezcImageTransformation( $this->converter, 'test', $filtersBefore, array( 'image/jpeg' ) );
 
-        $trans->addFilter( $newFilter, 1 );            
+        $trans->addFilter( $newFilter, 1 );
 
         $this->assertAttributeEquals(
             $filtersAfter,

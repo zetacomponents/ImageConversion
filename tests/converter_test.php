@@ -9,9 +9,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -34,7 +34,7 @@ require_once dirname( __FILE__ ) . "/test_case.php";
  */
 class ezcImageConversionConverterTest extends ezcImageConversionTestCase
 {
-    
+
     protected $converter;
 
 	public static function suite()
@@ -110,7 +110,7 @@ class ezcImageConversionConverterTest extends ezcImageConversionTestCase
             "Conversions not registered successfully."
         );
     }
-    
+
     public function testConstructFailureInvalidSettings()
     {
         $conversionsIn = array(
@@ -164,9 +164,9 @@ class ezcImageConversionConverterTest extends ezcImageConversionTestCase
             "image/ezc"  => "image/jpeg",
             "image/wbmp" => "image/jpeg",
         );
-        $settings = new ezcImageConverterSettings( 
+        $settings = new ezcImageConverterSettings(
             array( new ezcImageHandlerSettings( "GD", "ezcImageGdHandler" ) ),
-            $conversionsIn 
+            $conversionsIn
         );
 
         try
@@ -187,7 +187,7 @@ class ezcImageConversionConverterTest extends ezcImageConversionTestCase
             "image/xpm"  => "image/jpeg",
             "image/wbmp" => "image/jpeg",
         );
-        $settings = new ezcImageConverterSettings( 
+        $settings = new ezcImageConverterSettings(
             array( new ezcImageHandlerSettings( "Toby", "fooImageHandlerToby" ) ),
             $conversionsIn
         );
@@ -353,10 +353,10 @@ class ezcImageConversionConverterTest extends ezcImageConversionTestCase
         $dstPath = $this->getTempPath();
 
 
-        $this->converter->applyFilter( 
-            new ezcImageFilter( 
-                "scale", 
-                array( "width" => 10, "height" => 10, "direction" => ezcImageGeometryFilters::SCALE_DOWN ) 
+        $this->converter->applyFilter(
+            new ezcImageFilter(
+                "scale",
+                array( "width" => 10, "height" => 10, "direction" => ezcImageGeometryFilters::SCALE_DOWN )
             ),
             $srcPath,
             $dstPath
@@ -374,7 +374,7 @@ class ezcImageConversionConverterTest extends ezcImageConversionTestCase
     {
         $srcPath = $this->testFiles["jpeg"];
         $dstPath = $this->getTempPath();
-        
+
 
         $this->converter->applyFilter( new ezcImageFilter( "colorspace", array( "space" => ezcImageColorspaceFilters::COLORSPACE_MONOCHROME ) ),
                                        $srcPath, $dstPath );
@@ -386,12 +386,12 @@ class ezcImageConversionConverterTest extends ezcImageConversionTestCase
             2000
         );
     }
-    
+
     public function testApplyFilterSuccessColorspaceDefinedHandler()
     {
         $srcPath = $this->testFiles['jpeg'];
         $dstPath = $this->getTempPath();
-        
+
 
         $this->converter->applyFilter(
             new ezcImageFilter(
@@ -423,8 +423,8 @@ class ezcImageConversionConverterTest extends ezcImageConversionTestCase
             $this->converter->applyFilter(
                 new ezcImageFilter( "colorspace", array( "space" => ezcImageColorspaceFilters::COLORSPACE_MONOCHROME ) ),
                 $srcPath,
-                $dstPath, 
-                "ezc" 
+                $dstPath,
+                "ezc"
             );
         }
         catch ( ezcImageHandlerNotAvailableException $e )
@@ -444,7 +444,7 @@ class ezcImageConversionConverterTest extends ezcImageConversionTestCase
             $this->converter->applyFilter(
                 new ezcImageFilter( "ezc", array() ),
                 $srcPath,
-                $dstPath 
+                $dstPath
             );
         }
         catch ( ezcImageFilterNotAvailableException $e )
@@ -575,7 +575,7 @@ class ezcImageConversionConverterTest extends ezcImageConversionTestCase
             1,
             count( $transformations )
         );
-        
+
         $this->converter->removeTransformation( 'foo' );
 
         $transformations = $this->readAttribute( $this->converter, "transformations" );

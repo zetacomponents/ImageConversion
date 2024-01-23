@@ -9,9 +9,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -71,12 +71,12 @@ class ezcImageConversionHandlerGdTest extends ezcImageConversionHandlerTest
             $filePath,
             "Image reference not registered correctly."
         );
-        
+
         $this->assertEquals(
             $imageRef["mime"],
             "image/jpeg",
             "Image reference not registered correctly."
-        ); 
+        );
     }
 
     public function testLoadFailureFilenotexists()
@@ -148,7 +148,7 @@ class ezcImageConversionHandlerGdTest extends ezcImageConversionHandlerTest
         $ref = $this->handler->load( $tmpPath );
 
         unlink( $tmpPath );
-        
+
         $this->handler->save( $ref );
 
         ini_set( "gd.jpeg_ignore_warning", false );
@@ -210,7 +210,7 @@ class ezcImageConversionHandlerGdTest extends ezcImageConversionHandlerTest
             "File not correctly saved to new destination."
         );
     }
-    
+
     public function testSaveNewfileQualityLow()
     {
         $srcPath = $this->testFiles["png"];
@@ -381,13 +381,13 @@ class ezcImageConversionHandlerGdTest extends ezcImageConversionHandlerTest
         $dstPath = $this->getTempPath();
 
         $ref = $this->handler->load( $srcPath );
-        
+
         try
         {
             $this->handler->applyFilter(
                 $ref,
                 new ezcImageFilter(
-                    "non-existent", 
+                    "non-existent",
                     array( "width" => 200, "height" => 200, "direction" => ezcImageGeometryFilters::SCALE_BOTH )
                 )
             );
@@ -409,7 +409,7 @@ class ezcImageConversionHandlerGdTest extends ezcImageConversionHandlerTest
         $options->transparencyReplacementColor = array( 255, 0, 0 );
 
         $this->handler->save( $ref, $dstPath, 'image/jpeg', $options );
-        
+
         $this->handler->close( $ref );
         $this->assertImageSimilar(
             $this->getReferencePath(),

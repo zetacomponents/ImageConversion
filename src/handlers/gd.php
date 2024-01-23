@@ -9,9 +9,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -49,30 +49,30 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
 {
     /**
      * Scale filter.
-     * General scale filter. Scales the image to fit into a given box size, 
-     * determined by a given width and height value, measured in pixel. This 
+     * General scale filter. Scales the image to fit into a given box size,
+     * determined by a given width and height value, measured in pixel. This
      * method maintains the aspect ratio of the given image. Depending on the
      * given direction value, this method performs the following scales:
      *
      * - ezcImageGeometryFilters::SCALE_BOTH:
-     *      The image will be scaled to fit exactly into the given box 
+     *      The image will be scaled to fit exactly into the given box
      *      dimensions, no matter if it was smaller or larger as the box
      *      before.
      * - ezcImageGeometryFilters::SCALE_DOWN:
-     *      The image will be scaled to fit exactly into the given box 
+     *      The image will be scaled to fit exactly into the given box
      *      only if it was larger than the given box dimensions before. If it
      *      is smaller, the image will not be scaled at all.
      * - ezcImageGeometryFilters::SCALE_UP:
-     *      The image will be scaled to fit exactly into the given box 
+     *      The image will be scaled to fit exactly into the given box
      *      only if it was smaller than the given box dimensions before. If it
      *      is larger, the image will not be scaled at all. ATTENTION:
      *      In this case, the image does not necessarily fit into the given box
      *      afterwards.
      *
-     * ATTENTION: Using this filter method directly results in the filter being 
-     * applied to the image which is internally marked as "active" (most 
+     * ATTENTION: Using this filter method directly results in the filter being
+     * applied to the image which is internally marked as "active" (most
      * commonly this is the last recently loaded one). It is highly recommended
-     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method, 
+     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method,
      * which enables you to specify the image a filter is applied to.
      *
      * @param int $width     Scale to width
@@ -98,15 +98,15 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         {
             throw new ezcBaseValueException( 'height', $height, 'int > 0' );
         }
-        
+
         $resource = $this->getActiveResource();
         $oldDim = array( 'x' => imagesx( $resource ), 'y' => imagesy( $resource ) );
 
         $widthRatio = $width / $oldDim['x'];
         $heighRatio = $height / $oldDim['y'];
-        
+
         $ratio = min( $widthRatio, $heighRatio );
-        
+
         switch ( $direction )
         {
             case self::SCALE_DOWN:
@@ -131,10 +131,10 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      * image may only be scaled {@link self::SCALE_UP}, {@link self::SCALE_DOWN}
      * or if the scale may work in {@link self::SCALE_BOTH} directions.
      *
-     * ATTENTION: Using this filter method directly results in the filter being 
-     * applied to the image which is internally marked as "active" (most 
+     * ATTENTION: Using this filter method directly results in the filter being
+     * applied to the image which is internally marked as "active" (most
      * commonly this is the last recently loaded one). It is highly recommended
-     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method, 
+     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method,
      * which enables you to specify the image a filter is applied to.
      *
      * @param int $width     Scale to width
@@ -194,10 +194,10 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      * image may only be scaled {@link self::SCALE_UP}, {@link self::SCALE_DOWN}
      * or if the scale may work in {@link self::SCALE_BOTH} directions.
      *
-     * ATTENTION: Using this filter method directly results in the filter being 
-     * applied to the image which is internally marked as "active" (most 
+     * ATTENTION: Using this filter method directly results in the filter being
+     * applied to the image which is internally marked as "active" (most
      * commonly this is the last recently loaded one). It is highly recommended
-     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method, 
+     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method,
      * which enables you to specify the image a filter is applied to.
      *
      * @param int $height    Scale to height
@@ -254,10 +254,10 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      * Scale percent measures filter.
      * Scale an image to a given percentage value size.
      *
-     * ATTENTION: Using this filter method directly results in the filter being 
-     * applied to the image which is internally marked as "active" (most 
+     * ATTENTION: Using this filter method directly results in the filter being
+     * applied to the image which is internally marked as "active" (most
      * commonly this is the last recently loaded one). It is highly recommended
-     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method, 
+     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method,
      * which enables you to specify the image a filter is applied to.
      *
      * @param int $width  Scale to width
@@ -291,10 +291,10 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      * Scale the image to a fixed given pixel size, no matter to which
      * direction.
      *
-     * ATTENTION: Using this filter method directly results in the filter being 
-     * applied to the image which is internally marked as "active" (most 
+     * ATTENTION: Using this filter method directly results in the filter being
+     * applied to the image which is internally marked as "active" (most
      * commonly this is the last recently loaded one). It is highly recommended
-     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method, 
+     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method,
      * which enables you to specify the image a filter is applied to.
      *
      * @param int $width  Scale to width
@@ -327,10 +327,10 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      * {@link ezcImageConverter}).  Coordinates are given as integer values and
      * are measured from the top left corner.
      *
-     * ATTENTION: Using this filter method directly results in the filter being 
-     * applied to the image which is internally marked as "active" (most 
+     * ATTENTION: Using this filter method directly results in the filter being
+     * applied to the image which is internally marked as "active" (most
      * commonly this is the last recently loaded one). It is highly recommended
-     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method, 
+     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method,
      * which enables you to specify the image a filter is applied to.
      *
      * @param int $x      X offset of the cropping area.
@@ -364,18 +364,18 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         {
             throw new ezcBaseValueException( 'width', $width, 'int' );
         }
-        
+
         $oldResource = $this->getActiveResource();
-        
+
         $sourceWidth = imagesx( $oldResource );
         $sourceHeight = imagesy( $oldResource );
 
         $x = ( $x >= 0 ) ? $x : $sourceWidth  + $x;
         $y = ( $y >= 0 ) ? $y : $sourceHeight + $y;
-        
+
         $x = abs( min( $x, $x + $width ) );
         $y = abs( min( $y, $y + $height ) );
-       
+
         $width = abs( $width );
         $height = abs( $height );
 
@@ -387,7 +387,7 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         {
             $height = $sourceHeight - $y;
         }
-        
+
         $this->performCrop( $x, $y, $width, $height );
 
     }
@@ -401,10 +401,10 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      * - {@link self::COLORSPACE_SEPIA} - Sepia colors
      * - {@link self::COLORSPACE_MONOCHROME} - 2 colors black and white
      *
-     * ATTENTION: Using this filter method directly results in the filter being 
-     * applied to the image which is internally marked as "active" (most 
+     * ATTENTION: Using this filter method directly results in the filter being
+     * applied to the image which is internally marked as "active" (most
      * commonly this is the last recently loaded one). It is highly recommended
-     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method, 
+     * to apply filters through the {@link ezcImageGdHandler::applyFilter()} method,
      * which enables you to specify the image a filter is applied to.
      *
      * @param int $space Colorspace, one of self::COLORSPACE_* constants.
@@ -442,7 +442,7 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         }
 
     }
-    
+
     /**
      * Watermark filter.
      * Places a watermark on the image. The file to use as the watermark image
@@ -468,7 +468,7 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      */
     public function watermarkPercent( $image, $posX, $posY, $size = false )
     {
-        if ( !is_string( $image ) || !file_exists( $image ) || !is_readable( $image ) ) 
+        if ( !is_string( $image ) || !file_exists( $image ) || !is_readable( $image ) )
         {
             throw new ezcBaseValueException( 'image', $image, 'string, path to an image file' );
         }
@@ -484,7 +484,7 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         {
             throw new ezcBaseValueException( 'size', $size, 'int percentage value / bool' );
         }
-        
+
         $imgWidth = imagesx( $this->getActiveResource() );
         $imgHeight = imagesy( $this->getActiveResource() );
 
@@ -548,7 +548,7 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         {
             throw new ezcBaseValueException( 'height', $height, 'int/bool' );
         }
-        
+
         // Backup original image reference
         $originalRef = $this->getActiveReference();
 
@@ -577,11 +577,11 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         );
 
         $this->close( $watermarkRef );
-        
+
         // Restore original image reference
         $this->setActiveReference( $originalRef );
     }
-    
+
     /**
      * Creates a thumbnail, and crops parts of the given image to fit the range best.
      * This filter creates a thumbnail of the given image. The image is scaled
@@ -592,7 +592,7 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      * If you are looking for a filter that just resizes your image to
      * thumbnail size, you should consider the {@link
      * ezcImageGdHandler::scale()} filter.
-     * 
+     *
      * @param int $width  Width of the thumbnail.
      * @param int $height Height of the thumbnail.
      */
@@ -609,11 +609,11 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         $resource = $this->getActiveResource();
         $data[0] = imagesx( $resource );
         $data[1] = imagesy( $resource );
-        
+
         $scaleRatio  = max( $width / $data[0], $height / $data[1] );
         $scaleWidth  = round( $data[0] * $scaleRatio );
         $scaleHeight = round( $data[1] * $scaleRatio );
-        
+
         $cropOffsetX = ( $scaleWidth > $width )   ? round( ( $scaleWidth - $width ) / 2 )   : 0;
         $cropOffsetY = ( $scaleHeight > $height ) ? round( ( $scaleHeight - $height ) / 2 ) : 0;
 
@@ -631,7 +631,7 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      * The color is defined by the following array format (integer values 0-255):
      *
      * <code>
-     * array( 
+     * array(
      *      0 => <red value>,
      *      1 => <green value>,
      *      2 => <blue value>,
@@ -641,7 +641,7 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
      * If you are looking for a filter that just resizes your image to
      * thumbnail size, you should consider the {@link
      * ezcImageGdHandler::scale()} filter.
-     * 
+     *
      * @param int $width  Width of the thumbnail.
      * @param int $height Height of the thumbnail.
      * @param array $color Fill color.
@@ -662,10 +662,10 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
                 throw new ezcBaseValueException( "color[$id]", $color[$id], 'int > 0 and < 256' );
             }
         }
-        
+
         // Sanity checks for $width and $height performed by scale() method.
         $this->scale( $width, $height, ezcImageGeometryFilters::SCALE_BOTH );
-        
+
         $oldResource = $this->getActiveResource();
 
         $realWidth   = imagesx( $oldResource );
@@ -900,7 +900,7 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         {
             $newResource = imagecreate( $width, $height );
         }
-   
+
         // Save transparency, if image has it
         $bgColor = imagecolorallocatealpha(  $newResource, 255, 255, 255, 127 );
         imagealphablending(  $newResource, true );
@@ -925,12 +925,12 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
     }
 
     /**
-     * General method to perform a crop operation. 
-     * 
-     * @param int $x 
-     * @param int $y 
-     * @param int $width 
-     * @param int $height 
+     * General method to perform a crop operation.
+     *
+     * @param int $x
+     * @param int $y
+     * @param int $width
+     * @param int $height
      * @return void
      */
     private function performCrop( $x, $y, $width, $height )
@@ -944,15 +944,15 @@ class ezcImageGdHandler extends ezcImageGdBaseHandler
         {
             $newResource = imagecreate( $width, $height );
         }
-        
+
         // Save transparency, if image has it
         $bgColor = imagecolorallocatealpha(  $newResource, 255, 255, 255, 127 );
         imagealphablending(  $newResource, true );
         imagesavealpha(  $newResource, true );
         imagefill(  $newResource, 1, 1, $bgColor );
-        
+
         $res = imagecopyresampled(
-            $newResource,           // destination resource 
+            $newResource,           // destination resource
             $oldResource,           // source resource
             0,                      // destination x coord
             0,                      // destination y coord

@@ -46,6 +46,7 @@
         "zetacomponents/image-analysis": "~1.1"
     },
     "require-dev": {
-        "zetacomponents/unit-test": "@dev"
+        "zetacomponents/unit-test": "@dev",
+        "phpunit/phpunit": "~9.0"
     }
 }

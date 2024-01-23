@@ -9,9 +9,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -28,12 +28,12 @@
 
 /**
  * ezcImageHandler implementation for ImageMagick.
- * This class only implements the base funtionality of handling images with 
- * ImageMagick. If you want to manipulate images using ImageMagick in your 
+ * This class only implements the base funtionality of handling images with
+ * ImageMagick. If you want to manipulate images using ImageMagick in your
  * application, you should use the {@link ezcImageImagemagickHandler}.
  *
  * You can use this base class to implement your own filter set on basis of
- * ImageMagick, but you can also use {@link ezcImageImagemagickHandler} for 
+ * ImageMagick, but you can also use {@link ezcImageImagemagickHandler} for
  * this and profit from its already implemented filters.
  *
  * @see ezcImageConverter
@@ -42,32 +42,32 @@
  * @package ImageConversion
  * @version //autogentag//
  */
-class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler 
+class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
 {
     /**
      * Path to the convert binary.
-     * 
+     *
      * @var string
      */
     private $binary;
 
     /**
      * Map of MIME types to convert tags.
-     * 
+     *
      * @var array(string=>string)
      */
     private $tagMap = array();
 
     /**
      * Filter options per reference.
-     * 
+     *
      * @var array(string=>array)
      */
     private $filterOptions = array();
 
     /**
      * Composite image setting per reference.
-     * 
+     *
      * @var array(string=>bool)
      */
     private $compositeImages = array();
@@ -78,7 +78,7 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
      * but only through the manager for configuration reasons. One can
      * get a direct reference through manager afterwards.
      *
-     * This handler has an option 'binary' available, which allows you to 
+     * This handler has an option 'binary' available, which allows you to
      * explicitly set the path to your ImageMagicks "convert" binary (this
      * may be necessary on Windows, since there may be an obscure "convert.exe"
      * in the $PATH variable available, which has nothing to do with
@@ -112,7 +112,7 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
      *         If the desired file does not exist.
      * @throws ezcImageMimeTypeUnsupportedException
      *         If the desired file has a not recognized type.
-     * @throws ezcImageFileNameInvalidException 
+     * @throws ezcImageFileNameInvalidException
      *         If an invalid character (", ', $) is found in the file name.
      */
     public function load( $file, $mime = null )
@@ -144,7 +144,7 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
      *         If the desired file exists and is not writeable.
      * @throws ezcImageMimeTypeUnsupportedException
      *         If the desired MIME type is not recognized.
-     * @throws ezcImageFileNameInvalidException 
+     * @throws ezcImageFileNameInvalidException
      *         If an invalid character (", ', $) is found in the file name.
      */
     public function save( $image, $newFile = null, $mime = null, ezcImageSaveOptions $options = null )
@@ -158,7 +158,7 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
         {
             $this->checkFileName( $newFile );
         }
-        
+
         // Check is transparency must be converted
         if  ( $this->needsTransparencyConversion( $this->getReferenceData( $image, 'mime' ), $mime ) && $options->transparencyReplacementColor !== null )
         {
@@ -167,7 +167,7 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
         }
 
         $this->saveCommon( $image, $newFile, $mime );
-        
+
         switch ( $this->getReferenceData( $image, 'mime' ) )
         {
             case "image/jpeg":
@@ -205,28 +205,28 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
                 escapeshellarg( $this->tagMap[$this->getReferenceData( $image, 'mime' )] . ':' . $this->getReferenceData( $image, 'resource' ) );
         }
 
-        
+
         // Prepare to run ImageMagick command
-        $descriptors = array( 
+        $descriptors = array(
             array( 'pipe', 'r' ),
             array( 'pipe', 'w' ),
             array( 'pipe', 'w' ),
         );
-        
+
         // Open ImageMagick process
         $imageProcess = proc_open( $command, $descriptors, $pipes );
         // Close STDIN pipe
         fclose( $pipes[0] );
-        
+
         $errorString  = '';
         $outputString = '';
-        // Read STDERR 
-        do 
+        // Read STDERR
+        do
         {
             $outputString .= rtrim( fgets( $pipes[1], 1024 ), "\n" );
             $errorString  .= rtrim( fgets( $pipes[2], 1024 ), "\n" );
         } while ( !feof( $pipes[2] ) );
-        
+
         // Wait for process to terminate and store return value
         $status = proc_get_status( $imageProcess );
         while ( $status['running'] !== false )
@@ -236,7 +236,7 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
             $status = proc_get_status( $imageProcess );
         }
         $return = proc_close( $imageProcess );
-        
+
         // Process potential errors
         // Exit code may be messed up with -1, especially on Windoze
         if ( ( $status['exitcode'] != 0 && $status['exitcode'] != -1 ) || strlen( $errorString ) > 0 )
@@ -266,8 +266,8 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
      * This method takes such a color array and converts it into a string
      * representation usable by the convert binary. For the above examle it
      * would be '#FF0000'.
-     * 
-     * @param array $color 
+     *
+     * @param array $color
      * @return void
      *
      * @throws ezcBaseValueException
@@ -322,8 +322,8 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
     }
 
     /**
-     * Add an image to composite with the given reference. 
-     * 
+     * Add an image to composite with the given reference.
+     *
      * @param string $reference The reference to add an image to
      * @param string $file      The file to composite with the image.
      * @return void
@@ -424,9 +424,9 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
                 'ImageMagick not installed or not available in PATH variable.'
             );
         }
-        
+
         // Prepare to run ImageMagick command
-        $descriptors = array( 
+        $descriptors = array(
             array( 'pipe', 'r' ),
             array( 'pipe', 'w' ),
             array( 'pipe', 'w' ),
@@ -439,19 +439,19 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
         fclose( $pipes[0] );
 
         $outputString = '';
-        // Read STDOUT 
-        do 
+        // Read STDOUT
+        do
         {
             $outputString .= rtrim( fgets( $pipes[1], 1024 ), "\n" );
         } while ( !feof( $pipes[1] ) );
 
         $errorString = '';
-        // Read STDERR 
-        do 
+        // Read STDERR
+        do
         {
             $errorString .= rtrim( fgets( $pipes[2], 1024 ), "\n" );
         } while ( !feof( $pipes[2] ) );
-        
+
         // Wait for process to terminate and store return value
         $return = proc_close( $imageProcess );
 
@@ -461,7 +461,7 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
             throw new ezcImageHandlerNotAvailableException( 'ezcImageImagemagickHandler', 'ImageMagick not installed or not available in PATH variable.' );
         }
     }
-    
+
     /**
      * Creates default settings for the handler and returns it.
      * The reference name will be set to 'ImageMagick'.

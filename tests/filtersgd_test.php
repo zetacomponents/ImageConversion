@@ -9,9 +9,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -197,7 +197,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
         }
         catch ( ezcBaseValueException $e )
         {}
-        
+
         try
         {
             $this->handler->scale( 500, -23, ezcImageGeometryFilters::SCALE_UP );
@@ -319,7 +319,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
         }
         catch ( ezcBaseValueException $e )
         {}
-        
+
         try
         {
             $this->handler->scaleWidth( 42, 23 );
@@ -441,7 +441,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
         }
         catch ( ezcBaseValueException $e )
         {}
-        
+
         try
         {
             $this->handler->scaleHeight( 42, 23 );
@@ -506,7 +506,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
         }
         catch ( ezcBaseValueException $e )
         {}
-        
+
         try
         {
             $this->handler->scalePercent( -23, -23 );
@@ -590,7 +590,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
         }
         catch ( ezcBaseValueException $e )
         {}
-        
+
         try
         {
             $this->handler->scaleExact( -23, -23 );
@@ -792,7 +792,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             ezcImageConversionTestCase::DEFAULT_SIMILARITY_GAP
         );
     }
-    
+
     public function testColorspaceFailureInvalidParam()
     {
         try
@@ -803,7 +803,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
         catch ( ezcBaseValueException $e )
         {}
     }
-    
+
     public function testWatermarkAbsoluteNoScale()
     {
         $this->handler->watermarkAbsolute( dirname( __FILE__ ) . "/data/watermark.png", 100, 80 );
@@ -815,7 +815,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             ezcImageConversionTestCase::DEFAULT_SIMILARITY_GAP
         );
     }
-    
+
     public function testWatermarkAbsoluteScale()
     {
         $this->handler->watermarkAbsolute( dirname( __FILE__ ) . "/data/watermark.png", 10, 10, 130, 93 );
@@ -827,7 +827,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             500
         );
     }
-    
+
     public function testWatermarkAbsoluteNoScaleNegativeOffset()
     {
         $this->handler->watermarkAbsolute( dirname( __FILE__ ) . "/data/watermark.png", -50, -33 );
@@ -839,7 +839,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             ezcImageConversionTestCase::DEFAULT_SIMILARITY_GAP
         );
     }
-    
+
     public function testWatermarkPercentNoScale()
     {
         $this->handler->watermarkPercent( dirname( __FILE__ ) . "/data/watermark.png", 10, 90 );
@@ -851,7 +851,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             ezcImageConversionTestCase::DEFAULT_SIMILARITY_GAP
         );
     }
-    
+
     public function testWatermarkAbsoluteFailureInvalidParam()
     {
         try
@@ -894,7 +894,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
         catch ( ezcBaseValueException $e )
         {}
     }
-    
+
     public function testWatermarkPercentScale()
     {
         $this->handler->watermarkPercent( dirname( __FILE__ ) . "/data/watermark.png", 80, 80, 20 );
@@ -906,7 +906,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             450
         );
     }
-    
+
     public function testWatermarkPercentFailureInvalidParam()
     {
         try
@@ -941,7 +941,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
         catch ( ezcBaseValueException $e )
         {}
     }
-    
+
     public function testCropThumbnailVertical()
     {
         $this->handler->croppedThumbnail( 50, 50 );
@@ -953,7 +953,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             ezcImageConversionTestCase::DEFAULT_SIMILARITY_GAP
         );
     }
-    
+
     public function testCropThumbnailHorizontal()
     {
         $this->handler->croppedThumbnail( 100, 50 );
@@ -965,7 +965,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             ezcImageConversionTestCase::DEFAULT_SIMILARITY_GAP
         );
     }
-    
+
     public function testCroppedThumbnailFailures()
     {
         try
@@ -997,7 +997,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
         catch ( ezcBaseValueException $e )
         {}
     }
-    
+
     public function testFillThumbnailVertical()
     {
         $this->handler->filledThumbnail( 50, 50, array( 255, 0, 0 ) );
@@ -1009,7 +1009,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             ezcImageConversionTestCase::DEFAULT_SIMILARITY_GAP
         );
     }
-    
+
     public function testFillThumbnailHorizontal()
     {
         $this->handler->filledThumbnail( 100, 50, array( 255, 0, 0 ) );
@@ -1021,7 +1021,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             ezcImageConversionTestCase::DEFAULT_SIMILARITY_GAP
         );
     }
-    
+
     public function testFillThumbnailTooLargeColorArray()
     {
         $this->handler->filledThumbnail( 100, 50, array( 255, 0, 0, 400, 500, 600 ) );
@@ -1033,7 +1033,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
             ezcImageConversionTestCase::DEFAULT_SIMILARITY_GAP
         );
     }
-    
+
     public function testFilledThumbnailFailures()
     {
         try

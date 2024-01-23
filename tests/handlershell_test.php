@@ -9,9 +9,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -87,7 +87,7 @@ class ezcImageConversionHandlerShellTest extends ezcImageConversionHandlerTest
         );
 
         $this->assertSame(
-            $imageRef["mime"],    
+            $imageRef["mime"],
             "image/jpeg",
             "Image reference not registered correctly."
         );
@@ -134,7 +134,7 @@ class ezcImageConversionHandlerShellTest extends ezcImageConversionHandlerTest
         $ref = $this->handler->load( $tmpPath );
 
         unlink( $tmpPath );
-        
+
         try
         {
             $this->handler->save( $ref );
@@ -165,7 +165,7 @@ class ezcImageConversionHandlerShellTest extends ezcImageConversionHandlerTest
             "Temporary file not deleted successfully."
         );
     }
-    
+
     public function testRemoveTempFilesInDtorSuccess()
     {
         $filePath = $this->testFiles["jpeg"];
@@ -174,7 +174,7 @@ class ezcImageConversionHandlerShellTest extends ezcImageConversionHandlerTest
 
         $refProp = $this->getReferences();
         $imageRef = current( $refProp );
-        
+
         // Manually destruct handler
         unset( $this->handler );
 
@@ -213,7 +213,7 @@ class ezcImageConversionHandlerShellTest extends ezcImageConversionHandlerTest
         $this->handler->applyFilter( $ref, new ezcImageFilter( "scale", array( "width" => 200, "height" => 200, "direction" => ezcImageGeometryFilters::SCALE_BOTH ) ) );
         $this->handler->applyFilter( $ref, new ezcImageFilter( "crop", array( "x" => 50, "width" => 100, "y" => 50, "height" => 100 ) ) );
         $this->handler->applyFilter( $ref, new ezcImageFilter( "colorspace", array( "space" => ezcImageColorspaceFilters::COLORSPACE_SEPIA ) ) );
-        
+
         $this->handler->save( $ref, $dstPath );
 
         $this->handler->close( $ref );
@@ -227,7 +227,7 @@ class ezcImageConversionHandlerShellTest extends ezcImageConversionHandlerTest
         // @ todo: Orphan! Remove!
         $this->removeTempDir();
     }
-    
+
     public function testSaveNewfileQualityLow()
     {
         $srcPath = $this->testFiles["png"];
@@ -316,7 +316,7 @@ class ezcImageConversionHandlerShellTest extends ezcImageConversionHandlerTest
         $options->transparencyReplacementColor = array( 255, 0, 0 );
 
         $this->handler->save( $ref, $dstPath, 'image/jpeg', $options );
-        
+
         $this->handler->close( $ref );
         $this->assertImageSimilar(
             $this->getReferencePath(),

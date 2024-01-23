@@ -47,10 +47,10 @@ class ezcImageConversionFiltersShellTest extends ezcImageConversionTestCase
 
 	public static function suite()
 	{
-		return new PHPUnit_Framework_TestSuite( "ezcImageConversionFiltersShellTest" );
+		return new \PHPUnit\Framework\TestSuite( "ezcImageConversionFiltersShellTest" );
 	}
 
-    protected function setUp()
+    protected function setUp() : void
     {
         try
         {
@@ -63,7 +63,7 @@ class ezcImageConversionFiltersShellTest extends ezcImageConversionTestCase
         $this->imageReference = $this->handler->load( $this->testFiles['jpeg'] );
     }
 
-    protected function tearDown()
+    protected function tearDown() : void
     {
         unset( $this->handler );
     }

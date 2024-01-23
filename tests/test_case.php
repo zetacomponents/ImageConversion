@@ -73,7 +73,7 @@ class ezcImageConversionTestCase extends ezcTestImageCase
         }
     }
 
-    protected function setUp()
+    protected function setUp() : void
     {
         if ( !ezcBaseFeatures::hasExtensionSupport( 'gd' ) )
         {

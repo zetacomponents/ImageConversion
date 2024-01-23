@@ -47,10 +47,10 @@ abstract class ezcImageConversionHandlerTest extends ezcImageConversionTestCase
 
 	public static function suite()
 	{
-		return new PHPUnit_Framework_TestSuite( "ezcImageConversionHandlerTest" );
+		return new \PHPUnit\Framework\TestSuite( "ezcImageConversionHandlerTest" );
 	}
 
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->handler  = new $this->handlerClass( call_user_func( array( $this->handlerClass, "defaultSettings" ) ) );
     }

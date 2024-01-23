@@ -43,10 +43,10 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
 
 	public static function suite()
 	{
-		return new PHPUnit_Framework_TestSuite( "ezcImageConversionTransformationTest" );
+		return new \PHPUnit\Framework\TestSuite( "ezcImageConversionTransformationTest" );
 	}
 
-    protected function setUp()
+    protected function setUp() : void
     {
         try
         {
@@ -183,7 +183,7 @@ class ezcImageConversionTransformationTest extends ezcImageConversionTestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown() : void
     {
         unset( $this->converter );
     }

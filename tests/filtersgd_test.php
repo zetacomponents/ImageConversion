@@ -68,10 +68,10 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
 
 	public static function suite()
 	{
-		return new PHPUnit_Framework_TestSuite( "ezcImageConversionFiltersGdTest" );
+		return new \PHPUnit\Framework\TestSuite( "ezcImageConversionFiltersGdTest" );
 	}
 
-    protected function setUp()
+    protected function setUp() : void
     {
         try
         {
@@ -84,7 +84,7 @@ class ezcImageConversionFiltersGdTest extends ezcImageConversionTestCase
         $this->imageReference = $this->handler->load( $this->testFiles["jpeg"] );
     }
 
-    protected function tearDown()
+    protected function tearDown() : void
     {
         unset( $this->handler );
     }

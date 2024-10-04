@@ -9,9 +9,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -76,10 +76,10 @@
  *         'image/bmp' => 'image/jpeg',
  *     )
  * );
- * 
+ *
  * // Create the converter itself.
  * $converter = new ezcImageConverter( $settings );
- * 
+ *
  * // Define a transformation
  * $filters = array(
  *     new ezcImageFilter(
@@ -96,19 +96,19 @@
  *         )
  *     ),
  * );
- * 
+ *
  * // Which MIME types the conversion may output
  * $mimeTypes = array( 'image/jpeg', 'image/png' );
- * 
+ *
  * // Create the transformation inside the manager
  * $converter->createTransformation( 'thumbnail', $filters, $mimeTypes );
- * 
+ *
  * // Transform an image.
  * $converter->transform( 'thumbnail', dirname(__FILE__).'/jpeg.jpg', dirname(__FILE__).'/jpeg_thumb.jpg' );
  * </code>
  *
- * It's recommended to create only a single ezcImageConverter instance in your 
- * application to avoid creating multiple instances of it's internal objects. 
+ * It's recommended to create only a single ezcImageConverter instance in your
+ * application to avoid creating multiple instances of it's internal objects.
  * You can implement a singleton pattern for this, which might look similar to
  * the following example:
  * <code>
@@ -128,11 +128,11 @@
  *                 'image/bmp' => 'image/jpeg',
  *             )
  *         );
- * 
- * 
+ *
+ *
  *         // Create the converter itself.
  *         $converter = new ezcImageConverter( $settings );
- * 
+ *
  *         // Define a transformation
  *         $filters = array(
  *             new ezcImageFilter(
@@ -157,26 +157,26 @@
  *                 )
  *             ),
  *         );
- * 
+ *
  *         // Which MIME types the conversion may output
  *         $mimeTypes = array( 'image/jpeg', 'image/png' );
- * 
+ *
  *         // Create the transformation inside the manager
  *         $converter->createTransformation( 'funny', $filters, $mimeTypes );
- * 
+ *
  *         // Assign singleton instance
  *         $GLOBALS['_ezcImageConverterInstance'] = $converter;
  *     }
- * 
+ *
  *     // Return singleton instance
  *     return $GLOBALS['_ezcImageConverterInstance'];
  * }
- * 
+ *
  * // ...
  * // Somewhere else in the code...
  * // Transform an image.
  * getImageConverterInstance()->transform( 'funny', dirname(__FILE__).'/jpeg.jpg', dirname(__FILE__).'/jpeg_singleton.jpg' );
- * 
+ *
  * </code>
  *
  * @see ezcImageHandler
@@ -279,12 +279,12 @@ class ezcImageConverter
      *
      * @return ezcImageTransformation
      *
-     * @throws ezcImageFiltersException 
+     * @throws ezcImageFiltersException
      *         If a given filter does not exist.
-     * @throws ezcImageTransformationAlreadyExists 
-     *         If a transformation with the given name does already exist. 
+     * @throws ezcImageTransformationAlreadyExists
+     *         If a transformation with the given name does already exist.
      */
-    public function createTransformation( $name, array $filters, array $mimeOut, ezcImageSaveOptions $saveOptions = null )
+    public function createTransformation( $name, array $filters, array $mimeOut, ?ezcImageSaveOptions $saveOptions = null )
     {
         if ( isset( $this->transformations[$name] ) )
         {
@@ -301,7 +301,7 @@ class ezcImageConverter
      *
      * @return ezcImageTransformation The removed transformation
      *
-     * @throws ezcImageTransformationNotAvailableExeption 
+     * @throws ezcImageTransformationNotAvailableExeption
      *         If the requested transformation is unknown.
      */
     public function removeTransformation( $name )
@@ -323,12 +323,12 @@ class ezcImageConverter
      *
      * @throws ezcImageTransformationNotAvailableExeption
      *         If the requested transformation is unknown.
-     * @throws ezcImageTransformationException If an error occurs during the 
+     * @throws ezcImageTransformationException If an error occurs during the
      *         transformation. The returned exception contains the exception
      *         the problem resulted from in it's public $parent attribute.
-     * @throws ezcBaseFileNotFoundException If the file you are trying to 
+     * @throws ezcBaseFileNotFoundException If the file you are trying to
      *         transform does not exists.
-     * @throws ezcBaseFilePermissionException If the file you are trying to 
+     * @throws ezcBaseFilePermissionException If the file you are trying to
      *         transform is not readable.
      */
     public function transform( $name, $inFile, $outFile )
@@ -464,9 +464,9 @@ class ezcImageConverter
      *
      * @throws ezcImageHandlerNotAvailableException
      *         If fitting handler is not available.
-     * @throws ezcImageFilterNotAvailableException 
+     * @throws ezcImageFilterNotAvailableException
      *         If filter is not available.
-     * @throws ezcImageFileNameInvalidException 
+     * @throws ezcImageFileNameInvalidException
      *         If an invalid character (", ', $) is found in the file name.
      */
     public function applyFilter( ezcImageFilter $filter, $inFile, $outFile, $handlerName = null )

@@ -9,9 +9,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -41,7 +41,7 @@
  * @package ImageConversion
  * @version //autogentag//
  */
-class ezcImageGdBaseHandler extends ezcImageMethodcallHandler 
+class ezcImageGdBaseHandler extends ezcImageMethodcallHandler
 {
     /**
      * Create a new image handler.
@@ -82,7 +82,7 @@ class ezcImageGdBaseHandler extends ezcImageMethodcallHandler
      *         If the type of the given file is not recognized
      * @throws ezcImageFileNotProcessableException
      *         If the given file is not processable using this handler.
-     * @throws ezcImageFileNameInvalidException 
+     * @throws ezcImageFileNameInvalidException
      *         If an invalid character (", ', $) is found in the file name.
      */
     public function load( $file, $mime = null )
@@ -116,10 +116,10 @@ class ezcImageGdBaseHandler extends ezcImageMethodcallHandler
      *         If the desired file exists and is not writeable.
      * @throws ezcImageMimeTypeUnsupportedException
      *         If the desired MIME type is not recognized
-     * @throws ezcImageFileNameInvalidException 
+     * @throws ezcImageFileNameInvalidException
      *         If an invalid character (", ', $) is found in the file name.
      */
-    public function save( $image, $newFile = null, $mime = null, ezcImageSaveOptions $options = null )
+    public function save( $image, $newFile = null, $mime = null, ?ezcImageSaveOptions $options = null )
     {
         $options = ( $options === null ) ? new ezcImageSaveOptions() : $options;
 
@@ -127,7 +127,7 @@ class ezcImageGdBaseHandler extends ezcImageMethodcallHandler
         {
             $this->checkFileName( $newFile );
         }
-        
+
         // Check is transparency must be converted
         if  ( $this->needsTransparencyConversion( $this->getReferenceData( $image, 'mime' ), $mime ) && $options->transparencyReplacementColor !== null )
         {
@@ -171,10 +171,10 @@ class ezcImageGdBaseHandler extends ezcImageMethodcallHandler
      * with an opaque color when converting from a transparency supporting MIME
      * type (e.g. image/png) to a MIME type that does not support transparency.
      *
-     * The color 
-     * 
-     * @param mixed $image 
-     * @param mixed $color 
+     * The color
+     *
+     * @param mixed $image
+     * @param mixed $color
      * @return void
      */
     protected function replaceTransparency( $image, array $color )
@@ -190,13 +190,13 @@ class ezcImageGdBaseHandler extends ezcImageMethodcallHandler
         {
             $newResource = imagecreate( $width, $height );
         }
-        
+
         $bgColor = imagecolorallocate( $newResource, $color[0], $color[1], $color[2] );
         imagefill( $newResource, 0, 0, $bgColor );
-        
+
         // $res = imagecopyresampled(
         $res = imagecopyresampled(
-            $newResource,           // destination resource 
+            $newResource,           // destination resource
             $oldResource,           // source resource
             0,                      // destination x coord
             0,                      // destination y coord
@@ -265,7 +265,7 @@ class ezcImageGdBaseHandler extends ezcImageMethodcallHandler
      *
      * @param string $mime MIME type in format "image/<type>".
      * @return string imagecreatefrom* function name.
-     * 
+     *
      * @throws ezcImageMimeTypeUnsupportedException
      *         If the load function for a given MIME type does not exist.
      */
@@ -283,7 +283,7 @@ class ezcImageGdBaseHandler extends ezcImageMethodcallHandler
      *
      * @param string $mime MIME type in format "image/<type>".
      * @return string image* function name for saving.
-     * 
+     *
      * @throws ezcImageImagemagickHandler
      *         If the save function for a given MIME type does not exist.
      */
@@ -307,7 +307,7 @@ class ezcImageGdBaseHandler extends ezcImageMethodcallHandler
         return new ezcImageHandlerSettings( 'GD', 'ezcImageGdHandler' );
     }
 
-    
+
 }
 
 ?>

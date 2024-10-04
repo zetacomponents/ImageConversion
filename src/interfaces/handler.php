@@ -9,9 +9,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -45,8 +45,8 @@ abstract class ezcImageHandler
     protected $properties;
 
     /**
-     * Settings of the handlers 
-     * 
+     * Settings of the handlers
+     *
      * @var ezcImageHandlerSettings
      */
     protected $settings;
@@ -127,11 +127,11 @@ abstract class ezcImageHandler
     /**
      * Checks a file name for illegal characters.
      * Checks if a file name contains illegal characters, which are ", ' and $.
-     * 
+     *
      * @param string $file The file name to check.
      * @return void
      *
-     * @throws ezcImageFileNameInvalidException 
+     * @throws ezcImageFileNameInvalidException
      *         If an invalid character (", ', $) is found in the file name.
      */
     protected function checkFileName( $file )
@@ -150,8 +150,8 @@ abstract class ezcImageHandler
      * to be performed. This method returns if the given conversion from
      * $inMime to $outMime is affected by this.
      *
-     * @param string $inMime 
-     * @param string $outMime 
+     * @param string $inMime
+     * @param string $outMime
      * @return bool
      */
     protected function needsTransparencyConversion( $inMime, $outMime )
@@ -197,7 +197,7 @@ abstract class ezcImageHandler
      * @param ezcImageSaveOptions $options Options for saving.
      * @return void
      */
-    abstract public function save( $image, $newFile = null, $mime = null, ezcImageSaveOptions $options = null );
+    abstract public function save( $image, $newFile = null, $mime = null, ?ezcImageSaveOptions $options = null );
 
     /**
      * Close the file referenced by $image.
@@ -263,7 +263,7 @@ abstract class ezcImageHandler
      * @param string $image          Image reference to apply the filter on.
      * @param ezcImageFilter $filter Contains which filter operation to apply.
      * @return void
-     * 
+     *
      * @throws ezcImageFilterNotAvailableException
      *         If the desired filter does not exist.
      * @throws ezcImageMissingFilterParameterException

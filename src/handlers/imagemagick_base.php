@@ -191,19 +191,41 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
 
         if ( isset( $this->compositeImages[$image] ) )
         {
-            $command = $this->binary . ' ' .
-                ( isset( $this->filterOptions[$image] ) ? implode( ' ', $this->filterOptions[$image] ) : '' ) . ' ' .
-                escapeshellarg( $this->getReferenceData( $image, 'resource' ) ) . ' ' .
-                implode( ' ', $this->compositeImages[$image] ) . ' ' .
-                escapeshellarg( $this->tagMap[$this->getReferenceData( $image, 'mime' )] . ':' . $this->getReferenceData( $image, 'resource' ) );
+            $cmdArgs = array();
+            if ( isset( $this->filterOptions[$image] ) )
+            {
+                foreach ( $this->filterOptions[$image] as $opt )
+                {
+                    $cmdArgs[] = $opt[0];
+                    if ( $opt[1] !== null ) { $cmdArgs[] = (string) $opt[1]; }
+                }
+            }
+            $cmdArgs[] = $this->getReferenceData( $image, 'resource' );
+            foreach ( $this->compositeImages[$image] as $ci )
+            {
+                $cmdArgs[] = $ci;
+            }
+            $cmdArgs[] = $this->tagMap[$this->getReferenceData( $image, 'mime' )] . ':' . $this->getReferenceData( $image, 'resource' );
         }
         else
         {
-            $command = $this->binary . ' ' .
-                escapeshellarg( $this->getReferenceData( $image, 'resource' ) ) . ' ' .
-                ( isset( $this->filterOptions[$image] ) ? implode( ' ', $this->filterOptions[$image] ) : '' ) . ' ' .
-                escapeshellarg( $this->tagMap[$this->getReferenceData( $image, 'mime' )] . ':' . $this->getReferenceData( $image, 'resource' ) );
+            $cmdArgs = array();
+            $cmdArgs[] = $this->getReferenceData( $image, 'resource' );
+            if ( isset( $this->filterOptions[$image] ) )
+            {
+                foreach ( $this->filterOptions[$image] as $opt )
+                {
+                    $cmdArgs[] = $opt[0];
+                    if ( $opt[1] !== null ) { $cmdArgs[] = (string) $opt[1]; }
+                }
+            }
+            $cmdArgs[] = $this->tagMap[$this->getReferenceData( $image, 'mime' )] . ':' . $this->getReferenceData( $image, 'resource' );
         }
+
+        // Build the command as an array [binary, arg1, arg2, ...] so that
+        // proc_open() passes arguments directly to the OS without invoking
+        // a shell. This eliminates all shell-injection attack surface.
+        $command = array_merge( array( $this->binary ), $cmdArgs );
 
 
         // Prepare to run ImageMagick command
@@ -318,7 +340,9 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
      */
     protected function addFilterOption( $reference, $name, $parameter = null )
     {
-        $this->filterOptions[$reference][] = $name . ( $parameter !== null ? ' ' . escapeshellarg( $parameter ) : '' );
+        // Store as a two-element array [flag, value] so that proc_open can
+        // receive individual arguments without shell interpolation.
+        $this->filterOptions[$reference][] = array( $name, $parameter );
     }
 
     /**

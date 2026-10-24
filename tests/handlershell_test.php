@@ -70,6 +70,50 @@ class ezcImageConversionHandlerShellTest extends ezcImageConversionHandlerTest
         $handler->close( $ref );
     }
 
+    public function testSaveDoesNotBlockOnLargeOutput()
+    {
+        if ( ezcBaseFeatures::os() === 'Windows' || ezcBaseFeatures::findExecutableInPath( 'perl' ) === null )
+        {
+            $this->markTestSkipped( 'Needs a POSIX shell and perl.' );
+        }
+
+        // A fake "convert" that writes 256 KiB to STDOUT, more than a pipe
+        // buffer holds. If the handler stops reading STDOUT before the
+        // process is done, the writes cannot complete; after 5 seconds the
+        // process reports that on STDERR and exits with 3.
+        $dir = $this->createTempDir( 'ezcImageConversionLargeOutput' );
+        $binary = $dir . DIRECTORY_SEPARATOR . 'convert';
+        file_put_contents( $binary, <<<'EOT'
+#!/bin/sh
+if [ $# -eq 0 ]; then echo 'Version: ImageMagick (fake)'; exit 0; fi
+exec perl -MFcntl -e '
+    fcntl( STDOUT, F_SETFL, fcntl( STDOUT, F_GETFL, 0 ) | O_NONBLOCK );
+    $data = ( "x" x 1023 . "\n" ) x 256;
+    $deadline = time + 5;
+    while ( length $data ) {
+        $written = syswrite( STDOUT, $data );
+        if ( defined $written ) { substr( $data, 0, $written ) = ""; }
+        elsif ( time > $deadline ) { print STDERR "blocked\n"; exit 3; }
+        else { select( undef, undef, undef, 0.01 ); }
+    }
+    exit 0;
+'
+
+EOT
+        );
+        chmod( $binary, 0755 );
+
+        $settings = ezcImageImagemagickHandler::defaultSettings();
+        $settings->options['binary'] = $binary;
+        $handler = new ezcImageImagemagickHandler( $settings );
+
+        $ref = $handler->load( $this->testFiles["jpeg"], 'image/jpeg' );
+        $handler->save( $ref, $this->getTempPath(), 'image/jpeg' );
+        $handler->close( $ref );
+
+        $this->assertFileExists( $this->getTempPath() );
+    }
+
     public function testLoadSuccess()
     {
         $filePath = $this->testFiles["jpeg"];

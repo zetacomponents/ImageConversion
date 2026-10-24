@@ -211,6 +211,13 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
         // forever once the process fills the buffer of the pipe that is not
         // being read.
         $errorFile = tmpfile();
+        if ( $errorFile === false )
+        {
+            throw new ezcImageFileNotProcessableException(
+                $this->getReferenceData( $image, 'resource' ),
+                "Could not create a temporary file for the error output of '{$command}'."
+            );
+        }
         $descriptors = array(
             array( 'pipe', 'r' ),
             array( 'pipe', 'w' ),
@@ -219,6 +226,14 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
 
         // Open ImageMagick process
         $imageProcess = proc_open( $command, $descriptors, $pipes );
+        if ( $imageProcess === false )
+        {
+            fclose( $errorFile );
+            throw new ezcImageFileNotProcessableException(
+                $this->getReferenceData( $image, 'resource' ),
+                "The command '{$command}' could not be started."
+            );
+        }
         // Close STDIN pipe
         fclose( $pipes[0] );
 
@@ -334,6 +349,19 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
      */
     protected function addCompositeImage( $reference, $file )
     {
+        // ImageMagick can read a relative name like "-write.png" as an option
+        // and one like "msl:x.png" or "@list.txt" as a coder or file list,
+        // even when the name is quoted for the shell. An absolute path (or
+        // "./" in front of a relative one) is always read as a file name.
+        $realPath = realpath( $file );
+        if ( $realPath !== false )
+        {
+            $file = $realPath;
+        }
+        else if ( !preg_match( '#^([/\\\\]|[A-Za-z]:)#', $file ) )
+        {
+            $file = './' . $file;
+        }
         $this->compositeImages[$reference][] = $file;
     }
 

@@ -70,6 +70,101 @@ class ezcImageConversionHandlerShellTest extends ezcImageConversionHandlerTest
         $handler->close( $ref );
     }
 
+    public function testSaveDoesNotBlockOnLargeOutput()
+    {
+        if ( ezcBaseFeatures::os() === 'Windows' || ezcBaseFeatures::findExecutableInPath( 'perl' ) === null )
+        {
+            $this->markTestSkipped( 'Needs a POSIX shell and perl.' );
+        }
+
+        // A fake "convert" that writes 256 KiB to STDOUT, more than a pipe
+        // buffer holds. If the handler stops reading STDOUT before the
+        // process is done, the writes cannot complete; after 5 seconds the
+        // process reports that on STDERR and exits with 3.
+        $dir = $this->createTempDir( 'ezcImageConversionLargeOutput' );
+        $binary = $dir . DIRECTORY_SEPARATOR . 'convert';
+        file_put_contents( $binary, <<<'EOT'
+#!/bin/sh
+if [ $# -eq 0 ]; then echo 'Version: ImageMagick (fake)'; exit 0; fi
+exec perl -MFcntl -e '
+    fcntl( STDOUT, F_SETFL, fcntl( STDOUT, F_GETFL, 0 ) | O_NONBLOCK );
+    $data = ( "x" x 1023 . "\n" ) x 256;
+    $deadline = time + 5;
+    while ( length $data ) {
+        $written = syswrite( STDOUT, $data );
+        if ( defined $written ) { substr( $data, 0, $written ) = ""; }
+        elsif ( time > $deadline ) { print STDERR "blocked\n"; exit 3; }
+        else { select( undef, undef, undef, 0.01 ); }
+    }
+    exit 0;
+'
+
+EOT
+        );
+        chmod( $binary, 0755 );
+
+        $settings = ezcImageImagemagickHandler::defaultSettings();
+        $settings->options['binary'] = $binary;
+        $handler = new ezcImageImagemagickHandler( $settings );
+
+        $ref = $handler->load( $this->testFiles["jpeg"], 'image/jpeg' );
+        $handler->save( $ref, $this->getTempPath(), 'image/jpeg' );
+        $handler->close( $ref );
+
+        $this->assertFileExists( $this->getTempPath() );
+    }
+
+    public function testCompositeImageIsPassedAsAbsolutePath()
+    {
+        if ( ezcBaseFeatures::os() === 'Windows' )
+        {
+            $this->markTestSkipped( 'Needs a POSIX shell.' );
+        }
+
+        // ImageMagick may read a relative name like "-x.png" as an option,
+        // or "label:x.png" as a coder, even when it is quoted for the shell.
+        // A fake "convert" records the arguments it receives.
+        $dir = realpath( $this->createTempDir( 'ezcImageConversionCompositePath' ) );
+        $binary = $dir . DIRECTORY_SEPARATOR . 'convert';
+        file_put_contents( $binary, <<<'EOT'
+#!/bin/sh
+if [ $# -eq 0 ]; then echo 'Version: ImageMagick (fake)'; exit 0; fi
+for a in "$@"; do printf '%s\n' "$a"; done > "$0.args"
+
+EOT
+        );
+        chmod( $binary, 0755 );
+        copy( dirname( __FILE__ ) . '/data/watermark.png', $dir . DIRECTORY_SEPARATOR . '-x.png' );
+        copy( dirname( __FILE__ ) . '/data/watermark.png', $dir . DIRECTORY_SEPARATOR . 'label:x.png' );
+
+        $settings = ezcImageImagemagickHandler::defaultSettings();
+        $settings->options['binary'] = $binary;
+        $handler = new ezcImageImagemagickHandler( $settings );
+
+        $ref = $handler->load( $this->testFiles['jpeg'], 'image/jpeg' );
+        $cwd = getcwd();
+        chdir( $dir );
+        try
+        {
+            $handler->watermarkAbsolute( '-x.png', 10, 10 );
+            $handler->watermarkAbsolute( 'label:x.png', 20, 20 );
+            $handler->save( $ref, $this->getTempPath(), 'image/jpeg' );
+        }
+        catch ( Exception $e )
+        {
+            chdir( $cwd );
+            throw $e;
+        }
+        chdir( $cwd );
+        $handler->close( $ref );
+
+        $arguments = file( $binary . '.args', FILE_IGNORE_NEW_LINES );
+        $this->assertContains( $dir . DIRECTORY_SEPARATOR . '-x.png', $arguments );
+        $this->assertContains( $dir . DIRECTORY_SEPARATOR . 'label:x.png', $arguments );
+        $this->assertNotContains( '-x.png', $arguments );
+        $this->assertNotContains( 'label:x.png', $arguments );
+    }
+
     public function testLoadSuccess()
     {
         $filePath = $this->testFiles["jpeg"];

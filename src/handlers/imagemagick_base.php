@@ -194,7 +194,7 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
             $command = $this->binary . ' ' .
                 ( isset( $this->filterOptions[$image] ) ? implode( ' ', $this->filterOptions[$image] ) : '' ) . ' ' .
                 escapeshellarg( $this->getReferenceData( $image, 'resource' ) ) . ' ' .
-                implode( ' ', $this->compositeImages[$image] ) . ' ' .
+                implode( ' ', array_map( 'escapeshellarg', $this->compositeImages[$image] ) ) . ' ' .
                 escapeshellarg( $this->tagMap[$this->getReferenceData( $image, 'mime' )] . ':' . $this->getReferenceData( $image, 'resource' ) );
         }
         else
@@ -206,26 +206,40 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
         }
 
 
-        // Prepare to run ImageMagick command
+        // Prepare to run ImageMagick command. STDERR goes to a temporary
+        // file: reading STDOUT and STDERR from two pipes in turn can block
+        // forever once the process fills the buffer of the pipe that is not
+        // being read.
+        $errorFile = tmpfile();
+        if ( $errorFile === false )
+        {
+            throw new ezcImageFileNotProcessableException(
+                $this->getReferenceData( $image, 'resource' ),
+                "Could not create a temporary file for the error output of '{$command}'."
+            );
+        }
         $descriptors = array(
             array( 'pipe', 'r' ),
             array( 'pipe', 'w' ),
-            array( 'pipe', 'w' ),
+            $errorFile,
         );
 
         // Open ImageMagick process
         $imageProcess = proc_open( $command, $descriptors, $pipes );
+        if ( $imageProcess === false )
+        {
+            fclose( $errorFile );
+            throw new ezcImageFileNotProcessableException(
+                $this->getReferenceData( $image, 'resource' ),
+                "The command '{$command}' could not be started."
+            );
+        }
         // Close STDIN pipe
         fclose( $pipes[0] );
 
-        $errorString  = '';
-        $outputString = '';
-        // Read STDERR
-        do
-        {
-            $outputString .= rtrim( fgets( $pipes[1], 1024 ), "\n" );
-            $errorString  .= rtrim( fgets( $pipes[2], 1024 ), "\n" );
-        } while ( !feof( $pipes[2] ) );
+        // Read STDOUT until the process closes it
+        $outputString = str_replace( "\n", '', stream_get_contents( $pipes[1] ) );
+        fclose( $pipes[1] );
 
         // Wait for process to terminate and store return value
         $status = proc_get_status( $imageProcess );
@@ -236,6 +250,11 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
             $status = proc_get_status( $imageProcess );
         }
         $return = proc_close( $imageProcess );
+
+        // Read STDERR
+        rewind( $errorFile );
+        $errorString = str_replace( "\n", '', stream_get_contents( $errorFile ) );
+        fclose( $errorFile );
 
         // Process potential errors
         // Exit code may be messed up with -1, especially on Windoze
@@ -330,6 +349,19 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
      */
     protected function addCompositeImage( $reference, $file )
     {
+        // ImageMagick can read a relative name like "-write.png" as an option
+        // and one like "msl:x.png" or "@list.txt" as a coder or file list,
+        // even when the name is quoted for the shell. An absolute path (or
+        // "./" in front of a relative one) is always read as a file name.
+        $realPath = realpath( $file );
+        if ( $realPath !== false )
+        {
+            $file = $realPath;
+        }
+        else if ( !preg_match( '#^([/\\\\]|[A-Za-z]:)#', $file ) )
+        {
+            $file = './' . $file;
+        }
         $this->compositeImages[$reference][] = $file;
     }
 

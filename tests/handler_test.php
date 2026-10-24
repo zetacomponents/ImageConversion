@@ -135,6 +135,27 @@ abstract class ezcImageConversionHandlerTest extends ezcImageConversionTestCase
         $this->fail( "ezcImageFileNameInvalidException not thrown on illigal character $." );
     }
 
+    public function testSaveIllegalFileNameDoubleQuoteFailure()
+    {
+        $srcPath = $this->testFiles["jpeg"];
+        $dstPath = $this->getTempPath() . '"';
+
+        $ref = $this->handler->load( $srcPath );
+
+        try
+        {
+            $this->handler->save( $ref, $dstPath, "image/png" );
+        }
+        catch ( ezcImageFileNameInvalidException $e )
+        {
+            $this->handler->close( $ref );
+            $this->assertFalse( file_exists( $dstPath ) );
+            return;
+        }
+        $this->handler->close( $ref );
+        $this->fail( "ezcImageFileNameInvalidException not thrown on illegal character \"." );
+    }
+
     public function testCloseFailure()
     {
         try

@@ -825,6 +825,38 @@ class ezcImageConversionFiltersShellTest extends ezcImageConversionTestCase
         );
     }
 
+    public function testWatermarkAbsoluteFileNameIsEscaped()
+    {
+        $dir = $this->createTempDir( 'ezcImageConversionShellEscape' );
+        $watermark = $dir . DIRECTORY_SEPARATOR . 'watermark;touch injected;.png';
+        copy( dirname( __FILE__ ) . "/data/watermark.png", $watermark );
+
+        // A shell running the unescaped command would create "injected" in
+        // the current working directory.
+        $cwd = getcwd();
+        chdir( $dir );
+        try
+        {
+            $this->handler->watermarkAbsolute( $watermark, 100, 80 );
+            $this->handler->save( $this->imageReference, $this->getTempPath() );
+        }
+        catch ( Exception $e )
+        {
+            chdir( $cwd );
+            $this->assertFalse( file_exists( $dir . DIRECTORY_SEPARATOR . 'injected' ), 'Watermark file name was interpreted by the shell.' );
+            throw $e;
+        }
+        chdir( $cwd );
+
+        $this->assertFalse( file_exists( $dir . DIRECTORY_SEPARATOR . 'injected' ), 'Watermark file name was interpreted by the shell.' );
+        $this->assertImageSimilar(
+            $this->referencePath . DIRECTORY_SEPARATOR . 'ezcImageConversionFiltersShellTest_testWatermarkAbsoluteNoScale',
+            $this->getTempPath(),
+            "Image not rendered as expected.",
+            ezcImageConversionTestCase::DEFAULT_SIMILARITY_GAP
+        );
+    }
+
     public function testWatermarkAbsoluteScale()
     {
         $this->handler->watermarkAbsolute( dirname( __FILE__ ) . "/data/watermark.png", 10, 10, 130, 93 );

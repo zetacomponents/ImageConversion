@@ -197,7 +197,10 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
                 foreach ( $this->filterOptions[$image] as $opt )
                 {
                     $cmdArgs[] = $opt[0];
-                    if ( $opt[1] !== null ) { $cmdArgs[] = (string) $opt[1]; }
+                    if ( $opt[1] !== null )
+                    {
+                        $cmdArgs[] = (string) $opt[1];
+                    }
                 }
             }
             $cmdArgs[] = $this->getReferenceData( $image, 'resource' );
@@ -216,7 +219,10 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
                 foreach ( $this->filterOptions[$image] as $opt )
                 {
                     $cmdArgs[] = $opt[0];
-                    if ( $opt[1] !== null ) { $cmdArgs[] = (string) $opt[1]; }
+                    if ( $opt[1] !== null )
+                    {
+                        $cmdArgs[] = (string) $opt[1];
+                    }
                 }
             }
             $cmdArgs[] = $this->tagMap[$this->getReferenceData( $image, 'mime' )] . ':' . $this->getReferenceData( $image, 'resource' );

@@ -269,9 +269,11 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
         // Exit code may be messed up with -1, especially on Windoze
         if ( ( $status['exitcode'] != 0 && $status['exitcode'] != -1 ) || strlen( $errorString ) > 0 )
         {
+            // $command is an argument list; show it the way a shell would take it
+            $commandString = implode( ' ', array_map( 'escapeshellarg', $command ) );
             throw new ezcImageFileNotProcessableException(
                 $this->getReferenceData( $image, 'resource' ),
-                "The command '{$command}' resulted in an error ({$status['exitcode']}): '{$errorString}'. Output: '{$outputString}'"
+                "The command '{$commandString}' resulted in an error ({$status['exitcode']}): '{$errorString}'. Output: '{$outputString}'"
             );
         }
         // Finish atomic file operation
@@ -348,7 +350,9 @@ class ezcImageImagemagickBaseHandler extends ezcImageMethodcallHandler
     {
         // Store as a two-element array [flag, value] so that proc_open can
         // receive individual arguments without shell interpolation.
-        $this->filterOptions[$reference][] = array( $name, $parameter );
+        // The option is one argument now: surrounding blanks ('-resize ', as
+        // the filters pass it) no longer vanish in a shell and must go here.
+        $this->filterOptions[$reference][] = array( trim( $name ), $parameter );
     }
 
     /**
